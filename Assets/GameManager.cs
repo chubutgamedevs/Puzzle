@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private int cY = 0;
     private int slots;
     private float escala;
+    private Vector3  posSlot = Vector3.one;
     
     
     private RectTransform rt;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 
         Ancho = rt.rect.width * rt.localScale.x;
         Largo = rt.rect.height * rt.localScale.y;
+        Debug.Log("Ancho: " + Ancho + " Largo: " + Largo + " Escala: " + escala);
 
         GenerarGrilla();
     }
@@ -34,11 +36,17 @@ public class GameManager : MonoBehaviour
         
         while (cX != grillaX){
             while (cY != grillaY){
-                Instantiate(ItemSlot, new Vector3(0,this.transform.position.y + Largo*cY,0), Quaternion.identity);
+                posSlot = new Vector3(this.transform.position.x + Ancho*cX,this.transform.position.y + Largo*cY,0)*-1;
+                Debug.Log(posSlot);
+                Instantiate(ItemSlot, posSlot , Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
                 cY = cY+1;
             }
-            Instantiate(ItemSlot, new Vector3(this.transform.position.x + Ancho*cX,0), Quaternion.identity);
             cX = cX+1;
+            cY = 0;
+        }
+         for(int i = 0; i < slots; i++)
+        {
+        // Code to be repeated.
         }
 
     }
