@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Grilla : MonoBehaviour
 {
-        public GameObject ItemSlot;
-    private float Ancho = 1;
-    private float Largo = 1;
+    public GameObject ItemSlot;
     public int grillaX;
     public int grillaY; 
     private int cX = 0;
@@ -16,29 +14,30 @@ public class Grilla : MonoBehaviour
     private Vector3  posSlot = Vector3.one;
     [SerializeField] private GameObject Tablero;
     private RectTransform rt;
-
+    private RectTransform rta;
+    private float correccion = -1;
+    public GameObject origen;
     // Start is called before the first frame update
     void Start()
     {   
         rt = ItemSlot.GetComponent<RectTransform>();
-
-        Ancho = rt.rect.width;
-        Largo = rt.rect.height;
+        rta = this.gameObject.GetComponent<RectTransform>();
 
         slots = grillaX + grillaY;
-        escala = (Screen.height / grillaY) /100;
+        escala = rta.rect.y / grillaY;
+        rt.sizeDelta = new Vector2(escala * correccion, escala*correccion);
 
-        Debug.Log("Ancho: " + Ancho + " Largo: " + Largo + " Escala: " + escala+ "ScreenH: "+ Screen.height);
+        Debug.Log(rt.sizeDelta + " "+ Screen.height);
         GenerarGrilla();
     }
     private void GenerarGrilla(){
 
-        ItemSlot.transform.localScale =  new Vector2(escala,escala);
+       /// ItemSlot.transform.localScale =  new Vector2(escala,escala);
         Transform Tablero = GameObject.FindGameObjectWithTag("Canvas").transform;
 
         while (cX != grillaX){
             while (cY != grillaY){
-                posSlot = new Vector3( this.transform.position.x + Ancho*cX*escala,this.transform.position.y + Largo*cY*escala,0);
+                posSlot = new Vector3(origen.transform.position.x+(rt.sizeDelta.x*2)*cX,origen.transform.position.y+ (rt.sizeDelta.y*2)*cY,0);
                 posSlot = Tablero.localToWorldMatrix * posSlot;
                 Instantiate(ItemSlot, posSlot , Quaternion.identity, Tablero);
                 cY = cY+1;
